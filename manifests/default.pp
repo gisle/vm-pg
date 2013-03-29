@@ -13,6 +13,16 @@ service { "postgresql":
   require => Package["postgresql"],
 }
 
+file { "postgresql.conf":
+  path => "/etc/postgresql/9.1/main/postgresql.conf",
+  require => Package["postgresql"],
+  notify => Service["postgresql"],
+  ensure => present,
+  source => "/vagrant/postgresql.conf",
+  owner => "postgres",
+  group => "postgres",
+}
+
 file { "pg_hba.conf":
   path => "/etc/postgresql/9.1/main/pg_hba.conf",
   require => Package["postgresql"],
