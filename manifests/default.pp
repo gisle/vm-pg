@@ -21,7 +21,7 @@ service { "apache2":
 file { "phppgadmin-apache.conf":
   path => "/etc/phppgadmin/apache.conf",
   require => Package["phppgadmin"],
-  notify => Service["postgresql"],
+  notify => Service["apache2"],
   ensure => present,
   source => "/vagrant/phppgadmin-apache.conf",
   owner => "root",
