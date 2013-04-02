@@ -18,6 +18,16 @@ service { "apache2":
   require => Package["apache2"],
 }
 
+file { "phppgadmin-apache.conf":
+  path => "/etc/phppgadmin/apache.conf",
+  require => Package["phppgadmin"],
+  notify => Service["postgresql"],
+  ensure => present,
+  source => "/vagrant/phppgadmin-apache.conf",
+  owner => "root",
+  group => "root",
+}
+
 file { "postgresql.conf":
   path => "/etc/postgresql/9.1/main/postgresql.conf",
   require => Package["postgresql"],
