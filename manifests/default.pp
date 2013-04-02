@@ -3,9 +3,15 @@ exec { 'apt-get update':
   onlyif => "/bin/bash -c 'exit $(( $(( $(date +%s) - $(stat -c %Y /var/lib/apt/lists/$( ls /var/lib/apt/lists/ -tr1|tail -1 )) )) <= 604800 ))'",
 }
 
-package { [ "postgresql", "apache2", "phppgadmin", "language-pack-nb" ]:
+package { [ "postgresql", "apache2", "phppgadmin" ]:
   ensure => present,
   require => Exec['apt-get update'],
+}
+
+package { "language-pack-nb":
+  ensure => present,
+  require => Exec['apt-get update'],
+  before => Package["postgresql"],
 }
 
 service { "postgresql":
