@@ -24,6 +24,13 @@ service { "apache2":
   require => Package["apache2"],
 }
 
+exec { "pg_createuser":
+  require => Package["postgresql"],
+  command => "echo \"CREATE ROLE user1 LOGIN CREATEDB ENCRYPTED PASSWORD 'pass1'\" | sudo -u postgres psql",
+  path => "/bin:/usr/bin",
+  unless => "echo \\\\du | sudo -u postgres psql | grep user1",
+}
+
 file { "phppgadmin-apache.conf":
   path => "/etc/phppgadmin/apache.conf",
   require => Package["phppgadmin"],
