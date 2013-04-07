@@ -24,15 +24,14 @@ service { "apache2":
   require => Package["apache2"],
 }
 
-exec { "pg_createuser":
+exec { "pg_create_user1":
   require => Package["postgresql"],
   command => "echo \"CREATE ROLE user1 LOGIN CREATEDB ENCRYPTED PASSWORD 'pass1'\" | sudo -u postgres psql",
   path => "/bin:/usr/bin",
   unless => "echo \\\\du | sudo -u postgres psql | grep user1",
 }
 
-file { "phppgadmin-apache.conf":
-  path => "/etc/phppgadmin/apache.conf",
+file { "/etc/phppgadmin/apache.conf":
   require => Package["phppgadmin"],
   notify => Service["apache2"],
   ensure => present,
@@ -41,8 +40,7 @@ file { "phppgadmin-apache.conf":
   group => "root",
 }
 
-file { "postgresql.conf":
-  path => "/etc/postgresql/9.1/main/postgresql.conf",
+file { "/etc/postgresql/9.1/main/postgresql.conf":
   require => Package["postgresql"],
   notify => Service["postgresql"],
   ensure => present,
@@ -51,8 +49,7 @@ file { "postgresql.conf":
   group => "postgres",
 }
 
-file { "pg_hba.conf":
-  path => "/etc/postgresql/9.1/main/pg_hba.conf",
+file { "/etc/postgresql/9.1/main/pg_hba.conf":
   require => Package["postgresql"],
   notify => Service["postgresql"],
   ensure => present,
